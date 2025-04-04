@@ -34,8 +34,6 @@ router.get('/:id', auth, admin, (req, res) =>{
 
 router.post('/',  async(req, res) =>{
     const { error } = validateUser.validate(req.body);
-    console.log("ss : ",error);
-    
     if (error) return res.status(400).send(error?.details[0]?.message);
     knex.transaction((trx) =>{
         return knex.select('id').from('user').transacting(trx).where({email: req.body.email}).orWhere({phone_no: req.body.phone_no})
